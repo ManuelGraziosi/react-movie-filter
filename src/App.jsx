@@ -30,10 +30,6 @@ function App() {
     setFilteredMovies(tmpFilteredMovies);
   }, [chosenGenre, searchedTitle])
 
-  function filterByTitle(inputTitle) {
-    console.log(inputTitle);
-
-  }
 
   return (
     <>
@@ -65,7 +61,7 @@ function App() {
                 <input type="text" value={searchedTitle} onChange={(event) => setSearchedTitle(event.target.value)}
                   className="form-control" placeholder="Inserisci un titolo da cercare..." aria-label="Inserisci un titolo da cercare..." aria-describedby="basic-addon2" />
                 <div className="input-group-append">
-                  <button className="btn btn-outline-secondary" type="button" onClick={() => filterByTitle(searchedTitle)}>Cerca</button>
+                  <button className="btn btn-outline-secondary" type="button" onClick={() => setSearchedTitle("")}>Reset</button>
                 </div>
               </div>
             </div>

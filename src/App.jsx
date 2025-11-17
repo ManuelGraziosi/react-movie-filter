@@ -1,8 +1,9 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import moviesArray from "./assets/movies"
 
 function App() {
   const [movies, setMovies] = useState(moviesArray)
+  const [chosenGenre, setChosenGenre] = useState("");
   const [filteredMovies, setFilteredMovies] = useState(movies)
 
   const genreArray = [];
@@ -12,7 +13,13 @@ function App() {
     }
   });
 
-  console.log("genreArray", genreArray)
+  useEffect(() => {
+    if (chosenGenre) {
+      setFilteredMovies(movies.filter((curMovie) => curMovie.genre === chosenGenre));
+    } else {
+      setFilteredMovies(movies);
+    }
+  }, [chosenGenre])
 
   return (
     <>
@@ -24,7 +31,7 @@ function App() {
         <main className="mt-4">
           {/* Fileter Section */}
           <section>
-            <select name="movieGenre" id="movieGenre" onChange={(event) => console.log(event.target.value)}>
+            <select name="movieGenre" id="movieGenre" onChange={(event) => setChosenGenre(event.target.value)}>
               <option value="">--scegli un'opzione--</option>
               {
                 genreArray.map((curGenre, index) => (
@@ -32,6 +39,7 @@ function App() {
                 ))
               }
             </select>
+            <span className="badge badge-primary text-black">{filteredMovies.length}</span>
           </section>
 
           {/* Movies Catalog Section*/}

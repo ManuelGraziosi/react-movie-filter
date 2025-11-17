@@ -17,15 +17,22 @@ function App() {
   });
 
   useEffect(() => {
+    let tmpFilteredMovies = movies;
+
     if (chosenGenre) {
-      setFilteredMovies(movies.filter((curMovie) => curMovie.genre === chosenGenre));
-    } else {
-      setFilteredMovies(movies);
+      tmpFilteredMovies = tmpFilteredMovies.filter((curMovie) => curMovie.genre === chosenGenre);
     }
-  }, [chosenGenre])
+
+    if (searchedTitle) {
+      tmpFilteredMovies = tmpFilteredMovies.filter((curMovie) => curMovie.title.includes(searchedTitle));
+    }
+
+    setFilteredMovies(tmpFilteredMovies);
+  }, [chosenGenre, searchedTitle])
 
   function filterByTitle(inputTitle) {
     console.log(inputTitle);
+
   }
 
   return (

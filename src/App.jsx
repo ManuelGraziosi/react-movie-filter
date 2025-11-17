@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react"
-import moviesArray from "./assets/movies"
+import { useEffect, useState } from "react";
+import moviesArray from "./assets/movies";
+import MovieCard from "./assets/components/MovieCard";
 
 function App() {
-  const [movies, setMovies] = useState(moviesArray)
+  const [movies, setMovies] = useState(moviesArray);
   const [chosenGenre, setChosenGenre] = useState("");
-  const [filteredMovies, setFilteredMovies] = useState(movies)
+  const [filteredMovies, setFilteredMovies] = useState(movies);
+
+  const [searchedTitle, setSearchedTitle] = useState("");
 
   const genreArray = [];
   moviesArray.forEach((curMovie) => {
@@ -21,6 +24,10 @@ function App() {
     }
   }, [chosenGenre])
 
+  function filterByTitle(inputTitle) {
+    console.log(inputTitle);
+  }
+
   return (
     <>
       <div className="container">
@@ -29,17 +36,33 @@ function App() {
         </header>
 
         <main className="mt-4">
-          {/* Fileter Section */}
+          {/* Filter Section */}
           <section>
-            <select name="movieGenre" id="movieGenre" onChange={(event) => setChosenGenre(event.target.value)}>
-              <option value="">--scegli un'opzione--</option>
-              {
-                genreArray.map((curGenre, index) => (
-                  <option key={index} value={curGenre}>{curGenre}</option>
-                ))
-              }
-            </select>
-            <span className="badge badge-primary text-black">{filteredMovies.length}</span>
+            {/* Filtro per genere tramite select */}
+            <div>
+              <select name="movieGenre" id="movieGenre" onChange={(event) => setChosenGenre(event.target.value)}>
+                <option value="">--scegli un'opzione--</option>
+                {
+                  genreArray.map((curGenre, index) => (
+                    <option key={index} value={curGenre}>{curGenre}</option>
+                  ))
+                }
+              </select>
+              <span className="badge badge-primary text-black">{filteredMovies.length}</span>
+            </div>
+            {/* /Filtro per genere tramite select */}
+
+            {/* input filtro tramite titolo */}
+            <div>
+              <div className="input-group mt-3">
+                <input type="text" value={searchedTitle} onChange={(event) => setSearchedTitle(event.target.value)}
+                  className="form-control" placeholder="Inserisci un titolo da cercare..." aria-label="Inserisci un titolo da cercare..." aria-describedby="basic-addon2" />
+                <div className="input-group-append">
+                  <button className="btn btn-outline-secondary" type="button" onClick={() => filterByTitle(searchedTitle)}>Cerca</button>
+                </div>
+              </div>
+            </div>
+            {/* /Filtro tramite titolo */}
           </section>
 
           {/* Movies Catalog Section*/}
@@ -48,14 +71,7 @@ function App() {
               {
                 filteredMovies.map((curMovie, index) => (
                   <div key={index} className="col g-3">
-                    <div className="card h-100">
-                      <div className="card-header">
-                        <h5 className="card-title">{curMovie.title}</h5>
-                      </div>
-                      <div className="card-body">
-                        <p className="card-text">Genere: {curMovie.genre}</p>
-                      </div>
-                    </div>
+                    <MovieCard key={index} inputMovie={curMovie} />
                   </div>
                 ))
               }
